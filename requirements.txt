@@ -1,0 +1,7 @@
+gradio>=4.0.0
+huggingface_hub>=0.23.0
+pyyaml
+imageio
+imageio-ffmpeg
+numpy
+pillow

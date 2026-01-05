@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  ltx-webui:
+    build: .
+    container_name: ltx-webui
+    ports:
+      - "7860:7860"
+    environment:
+      # HF 模型缓存：必须挂载到宿主机，避免反复下载
+      - HF_HOME=/models/hf
+      - TRANSFORMERS_CACHE=/models/hf
+      - HUGGINGFACE_HUB_CACHE=/models/hf
+
+      # WebUI 默认模型（可以改）
+      # 可选值：
+      # ltxv-13b-0.9.8-distilled
+      # ltxv-13b-0.9.8-distilled-fp8
+      # ltxv-2b-0.9.8-distilled-fp8
+      - LTX_MODEL=ltxv-13b-0.9.8-distilled
+
+      # 控制推理节省显存：官方支持 offloading unused parts to CPU
+      - LTX_OFFLOAD=0
+
+    volumes:
+      - ./models:/models
+      - ./outputs:/workspace/LTX-Video/outputs
+
+    shm_size: "16gb"
+    restart: unless-stopped
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
