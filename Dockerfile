@@ -28,7 +28,7 @@ WORKDIR /workspace/LTX-Video
 RUN pip3 install -e .
 
 # 4) Install webui deps
-COPY requirements.webui.txt /workspace/requirements.webui.txt
+COPY requirements.txt /workspace/requirements.txt
 RUN pip3 install -r /workspace/requirements.webui.txt
 
 # 5) Copy gradio app
